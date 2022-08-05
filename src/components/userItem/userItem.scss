@@ -1,0 +1,30 @@
+.user {
+  &__item {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    height: 360px;
+
+    img {
+      width: 100px;
+    }
+
+    &-name {
+      font-weight: bold;
+      font-size: 22px;
+      line-height: 29px;
+      text-transform: uppercase;
+    }
+
+    &-repo {
+      font-weight: bold;
+      font-size: 22px;
+      line-height: 29px;
+      text-transform: uppercase;
+    }
+  }
+  &__item:hover {
+    outline: 1px solid red;
+  }
+}
