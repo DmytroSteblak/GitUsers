@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import UserItem from "../userItem/userItem";
 import {createSelector} from '@reduxjs/toolkit'
 
@@ -13,7 +13,6 @@ import {IUser} from "../../@types/types";
 
 const UsersList: React.FC = () => {
 
-
     const {fetchReadyUsers, fetchUsers} = useActions();
 
     const userReselector = createSelector(
@@ -27,7 +26,6 @@ const UsersList: React.FC = () => {
     const logins = useMemo(() => users.length !== 0 && users
         .map((item: string) => _withCreds(`/users/${item}?`)), [users])
 
-    console.log('login', logins)
 
     useEffect(() => {
         if (logins) {

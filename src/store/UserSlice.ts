@@ -49,17 +49,17 @@ export const fetchReadyUsers = (value: string[]) => async (dispatch: AppDispatch
        const data = await axios.all(value.map((endpoint) => axios.get(endpoint)))
         dispatch(userInformFetched(data.map((item) => item.data)))
     } catch (e) {
-        dispatch(userInformError())
+        dispatch(usersFetchingError())
     }
 }
 
 export const getAllRepo = ({ value, login}: { value: string; login: string; }) => async (dispatch: AppDispatch) => {
     try {
+        dispatch(usersFetching())
         const {data} = await axios.get(_withCreds(`/search/repositories?q=${value}+user:${login}`)) //https://api.github.com/search/repositories?q=+user:DmytroSteblak
-
         dispatch(getAllRepos(data.items.map(_transformRepo)))
     } catch (e) {
-        console.log('ОШиька', e)
+        dispatch(usersFetchingError())
     }
 }
 
@@ -85,7 +85,6 @@ export const userReducer = (state = initialState, action: UserAction): UserState
                     ...state,
                     usersLoadingStatus: 'error',
                     readyUsers: [],
-                    repos: []
                 }
             }
             return {
@@ -116,16 +115,25 @@ export const userReducer = (state = initialState, action: UserAction): UserState
                 fetching: action.payload
             }
         case UserActionTypes.GET_ALL_REPOS:
+            if (action.payload.length < 1) {
+                return {
+                    ...state,
+                    usersLoadingStatus: 'error',
+                    repos: []
+                }
+            }
             return {
                 ...state,
-                repos: action.payload
+                repos: action.payload,
+                usersLoadingStatus: 'idle',
             }
         case UserActionTypes.CLEAR_USERS:
             return {
                 ...state,
                 usersLogin: [],
                 readyUsers: [],
-                repos: []
+                repos: [],
+                usersLoadingStatus: 'idle',
             }
         default:
             return state
@@ -165,7 +173,7 @@ export const userInformError = (): UserInformError => {
     }
 }
 
-export const setFetching = (payload: boolean): FetchingNewItems => {
+export const setNewItems = (payload: boolean): FetchingNewItems => {
     return {
         type: UserActionTypes.FETCHING_NEW_ITEM,
         payload

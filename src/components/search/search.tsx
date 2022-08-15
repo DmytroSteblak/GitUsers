@@ -1,7 +1,7 @@
-import React, {ChangeEvent, useCallback, useEffect, useState} from 'react';
+import React, {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react';
 import {debounce} from 'lodash';
 import './search.scss';
-import {clearUsers, setFetching, usersFetching} from "../../store/UserSlice";
+import {setNewItems, usersFetching} from "../../store/UserSlice";
 import {useAppDispatch, useAppSelector, } from "../../hooks/useRedux";
 
 interface ISearchProps {
@@ -17,46 +17,37 @@ const Search: React.FC<ISearchProps> = ({searchHandler, typeProps, login}) => {
     const dispatch = useAppDispatch()
 
     const setNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const event = e.target.value;
+        const value = e.target.value;
         setPage(1);
-        setValue(event)
-        if (!event) {
-            dispatch(clearUsers())
+        setValue(value)
+        if (!value) {
         } else {
             dispatch(usersFetching())
-            debouceType(event);
+            debouceType(value)
         }
     }
 
-    const debouceType = useCallback(
-        debounce(
-            (value: string) => {
-                setPage(prevState => prevState + 1)
-                switch (typeProps) {
-                    case "users":
-                        return  debouncedSearch({value, page});
-                    case "repo":
-                        return debouncedSearch({value, login});
-                    default:
-                        return
-                }
-            }, 500
-        ), [])
+    const handleSearchDebounced = useMemo(() => debounce(setNameHandler, 800), []);
 
-    const debouncedSearch = useCallback(debounce(value => {
-        searchHandler(value)
-    }, 800), [])
-
+    const debouceType = (value: string) => {
+        setPage(prevState => prevState + 1)
+        switch (typeProps) {
+            case "users":
+                return  searchHandler({value, page});
+            case "repo":
+                return searchHandler({value, login});
+            default:
+                return
+        }
+    }
 
     useEffect(() => {
-        if (fetching) {
+        if (fetching && value) {
             debouceType(value)
         }
     }, [fetching])
 
-
     useEffect(() => {
-        dispatch(clearUsers())
         document.addEventListener('scroll', scrollHandler)
         return () => {
             document.removeEventListener('scroll', scrollHandler)
@@ -66,15 +57,15 @@ const Search: React.FC<ISearchProps> = ({searchHandler, typeProps, login}) => {
     const scrollHandler = useCallback((e: any) => {
         const event = e.target.documentElement;
         if (event.scrollHeight - (event.scrollTop + window.innerHeight) < 10) {
-            dispatch(setFetching(true))
+            dispatch(setNewItems(true))
         }
     }, [])
 
     return (
         <div className="search__form">
             <input
-                value={value}
-                onChange={setNameHandler}
+                defaultValue={value}
+                onChange={handleSearchDebounced}
                 type="text"
                 placeholder="Search For UserName"
                 name="login"
