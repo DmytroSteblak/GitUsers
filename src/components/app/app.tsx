@@ -1,16 +1,23 @@
-import React, {useState} from 'react';
+import React from 'react';
+import {
+    Routes,
+    Route,
+} from "react-router-dom";
 import Header from "../header/header";
-import Search from "../search/search";
 import UsersList from "../usersList/usersList";
+import ItemPages from "../itemPages/itemPages";
 
 function App() {
 
-
     return (
         <main className="app">
-            <Header />
-            <Search />
-            <UsersList />
+            <Header/>
+            <div className="app__content">
+                <Routes>
+                    <Route path="/" element={<UsersList/>}></Route>
+                    <Route path="user/:id" element={<ItemPages/>}></Route>
+                </Routes>
+            </div>
         </main>
     );
 }
