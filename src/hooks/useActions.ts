@@ -1,8 +1,9 @@
-import {fetchUsers, fetchReadyUsers, getAllRepo} from '../store/UserSlice';
+import { getAllRepo } from '../store/reposSlice'
+import {fetchUsersLogin, fetchReadyUsers} from '../store/usersSlice';
 import {bindActionCreators} from "redux";
 import {useAppDispatch} from "./useRedux";
 
 export const useActions = () => {
     const dispatch = useAppDispatch()
-    return bindActionCreators({fetchUsers, fetchReadyUsers, getAllRepo}, dispatch)
+    return bindActionCreators({fetchUsersLogin, fetchReadyUsers, getAllRepo}, dispatch)
 }

@@ -66,55 +66,31 @@ export interface UserState {
     readyUsers: IUser[];
     usersLoadingStatus: string;
     fetching: boolean;
-    repos: any;
-}
-
-export interface UsersFetching {
-    type: UserActionTypes.USERS_FETCHING;
-}
-
-export interface UsersFetched {
-    type: UserActionTypes.USERS_FETCHED;
-    payload: string[];
-}
-
-export interface UsersFetchingError {
-    type: UserActionTypes.USERS_FETCHING_ERROR;
-}
-
-export interface UserInformFetched {
-    type: UserActionTypes.USER_INFORM_FETCHED;
-    payload: IUser[];
-}
-
-export interface UserInformError {
-    type: UserActionTypes.USER_INFORM_ERROR;
-}
-
-export interface FetchingNewItems {
-    type: UserActionTypes.FETCHING_NEW_ITEM;
-    payload: boolean;
-}
-
-export interface ClearUsersType {
-    type: UserActionTypes.CLEAR_USERS
-}
-
-export interface getAllRepoByUser {
-    type: UserActionTypes.GET_ALL_REPOS;
-    payload: any
-}
-
-export enum UserActionTypes {
-    USERS_FETCHING = "USERS_FETCHING",
-    USERS_FETCHED = "USERS_FETCHED",
-    USERS_FETCHING_ERROR = "USERS_FETCHING_ERROR",
-    USER_INFORM_FETCHED = "USER_INFORM_FETCHED",
-    USER_INFORM_ERROR = "USER_INFORM_ERROR",
-    FETCHING_NEW_ITEM = "FETCHING_NEW_ITEM",
-    CLEAR_USERS = "CLEAR_USERS",
-    GET_ALL_REPOS = "GET_ALL_REPOS"
+    usersError: string;
+    repos?: any;
 }
 
 
-export type UserAction = UsersFetching | UsersFetched | UsersFetchingError | UserInformFetched | UserInformError | FetchingNewItems | getAllRepoByUser | ClearUsersType;
+
+export interface IRepos {
+    forks: number;
+    repoName: string;
+    stars: number;
+}
+export interface IReposState {
+    repos: IRepos[],
+    reposLoadingStatus: 'idle' | 'loading' | 'error',
+    reposError: string,
+}
+
+export interface InterfaceReposAnswer {
+    incomplete_results: boolean;
+    items: any;
+    total_count: number;
+}
+
+export interface IRepos {
+    forks: number;
+    name: string;
+    stargazers_count: number;
+}

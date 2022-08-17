@@ -1,19 +1,13 @@
-import {legacy_createStore as createStore, combineReducers, compose, applyMiddleware} from 'redux';
-import ReduxThunk from 'redux-thunk'
-import {userReducer} from './UserSlice'
+import {configureStore} from '@reduxjs/toolkit'
+import userReducer from './usersSlice'
+import reposReducer from './reposSlice'
 
-declare global {
-    interface Window {
-        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-    }
-}
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const store = createStore(
-    combineReducers({users: userReducer}),
-    compose(applyMiddleware(ReduxThunk), composeEnhancers())
-);
+let store = configureStore({
+    reducer: {users: userReducer, repos: reposReducer},
+    middleware: getDefaultMiddleware => getDefaultMiddleware(),
+    devTools: process.env.NODE_ENV !== 'production',
+})
 
 
 export default store;

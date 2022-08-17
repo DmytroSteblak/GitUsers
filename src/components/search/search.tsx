@@ -1,14 +1,16 @@
 import React, {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react';
 import {debounce} from 'lodash';
 import './search.scss';
-import {setNewItems, usersFetching} from "../../store/UserSlice";
-import {useAppDispatch, useAppSelector, } from "../../hooks/useRedux";
+import {setNewItems, usersFetching} from "../../store/usersSlice";
+import {useAppDispatch, useAppSelector,} from "../../hooks/useRedux";
+import {reposFetching} from "../../store/reposSlice";
 
 interface ISearchProps {
     searchHandler: any;
     typeProps: 'repo' | 'users';
     login?: string;
 }
+
 const Search: React.FC<ISearchProps> = ({searchHandler, typeProps, login}) => {
     const {fetching} = useAppSelector(state => state.users);
     const [value, setValue] = useState<string>('');
@@ -22,7 +24,6 @@ const Search: React.FC<ISearchProps> = ({searchHandler, typeProps, login}) => {
         setValue(value)
         if (!value) {
         } else {
-            dispatch(usersFetching())
             debouceType(value)
         }
     }
@@ -33,9 +34,13 @@ const Search: React.FC<ISearchProps> = ({searchHandler, typeProps, login}) => {
         setPage(prevState => prevState + 1)
         switch (typeProps) {
             case "users":
-                return  searchHandler({value, page});
+                // dispatch(usersFetching())
+                searchHandler({value, page});
+                break
             case "repo":
-                return searchHandler({value, login});
+                // dispatch(reposFetching())
+                searchHandler({value, login});
+                break
             default:
                 return
         }
