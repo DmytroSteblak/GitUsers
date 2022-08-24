@@ -18,6 +18,16 @@ const Search: React.FC<ISearchProps> = ({searchHandler, typeProps, login}) => {
 
     const dispatch = useAppDispatch()
 
+
+    // const data = useFetchUsersLoginQuery({value, page}, {
+    //     skip: value.length < 1,
+    //     refetchOnFocus: true,
+    // })
+    console.log('dDDDDAAA',)
+
+
+
+
     const setNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setPage(1);
@@ -34,11 +44,11 @@ const Search: React.FC<ISearchProps> = ({searchHandler, typeProps, login}) => {
         setPage(prevState => prevState + 1)
         switch (typeProps) {
             case "users":
-                // dispatch(usersFetching())
+                dispatch(usersFetching())
                 searchHandler({value, page});
                 break
             case "repo":
-                // dispatch(reposFetching())
+                dispatch(reposFetching())
                 searchHandler({value, login});
                 break
             default:

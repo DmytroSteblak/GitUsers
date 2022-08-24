@@ -15,17 +15,7 @@ export const _withCreds = (url: string) => {
     return `${_baseUrl}${url}&client_id=${_clientKey}&client_secret=${_secretKey}`
 }
 
-// export const fetchUsers = ({value, page}: { value: string; page: number; }) => async (dispatch: AppDispatch) => {
-//     try {
-//         const {data} = await axios.get<InterfaceResponse>(_withCreds(`/search/users?q=${value}&per_page=4&page=${page}`))
-//         dispatch(usersFetched(data.items.map((item) => item.login)))
-//     } catch (e) {
-//         if (e instanceof Error) {
-//             debugger
-//             dispatch(usersError(e.message))
-//         }
-//     }
-// }
+
 export const fetchUsersLogin = createAsyncThunk(
     'users/fetchLogin',
     async ({value, page}: { value: string, page: number }, thunkApi) => {
@@ -54,18 +44,6 @@ export const fetchReadyUsers = createAsyncThunk(
     }
 )
 
-// export const fetchReadyUsers = (value: string[]) => async (dispatch: AppDispatch) => {
-//     try {
-//         const data = await axios.all(value.map((endpoint) => axios.get<IUser>(endpoint)))
-//         dispatch(usersAllInformFetched(data.map((item) => item.data)))
-//     } catch (e) {
-//         if (e instanceof Error) {
-//             debugger
-//             dispatch(usersError(e.message))
-//         }
-//     }
-// }
-
 
 const initialState: UserState = {
     usersLogin: [],
@@ -82,22 +60,6 @@ export const usersSlice = createSlice({
         usersFetching: state => {
             state.usersLoadingStatus = 'loading'
         },
-        // usersFetched: (state, action: PayloadAction<string[]>) => {
-        //     if (!action.payload.length) {
-        //         state.usersLoadingStatus = 'error'
-        //         state.readyUsers = []
-        //     }
-        //     state.usersLogin = action.payload
-        // },
-        // usersError: (state, action: PayloadAction<string>) => {
-        //     state.usersLoadingStatus = 'error'
-        //     state.usersError = action.payload
-        // },
-        // usersAllInformFetched: (state, action: PayloadAction<IUser[]>) => {
-        //     state.usersLoadingStatus = 'idle'
-        //     state.fetching ? state.readyUsers = [...state.readyUsers, ...action.payload] : state.readyUsers = action.payload
-        //     state.fetching = false
-        // },
         setNewItems: (state, action) => {
             state.fetching = action.payload
         },

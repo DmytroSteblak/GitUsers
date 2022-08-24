@@ -17,20 +17,6 @@ const _transformRepo = (item: IRepos) => {
     }
 }
 
-// export const getAllRepo = ({ value, login}: { value: string; login: string; }) => async (dispatch: AppDispatch) => {
-//     try {
-//         dispatch(usersFetching())
-//         const {data} = await axios.get<InterfaceReposAnswer>(_withCreds(`/search/repositories?q=${value}+user:${login}`)) //https://api.github.com/search/repositories?q=+user:DmytroSteblak
-//         dispatch(reposFetched(data.items.map(_transformRepo)))
-//     } catch (e) {
-//         let errorMessage = "Failed to do something exceptional";
-//         if (e instanceof Error) {
-//             errorMessage = e.message;
-//         }
-//         dispatch(reposError(errorMessage))
-//     }
-// }
-
 export const getAllRepo = createAsyncThunk(
     'repos/fetchAll',
     async ({value, login}: any) => {
@@ -46,21 +32,6 @@ export const reposSlice = createSlice({
         reposFetching: state => {
             state.reposLoadingStatus = 'loading'
         },
-        // reposFetched: (state, action: PayloadAction<IRepos[]>) => {
-        //     if (!action.payload.length) {
-        //         debugger
-        //         state.reposLoadingStatus = 'error'
-        //         state.repos = []
-        //     } else {
-        //         state.reposLoadingStatus = 'idle'
-        //         state.reposError = ''
-        //         state.repos = action.payload
-        //     }
-        // },
-        // reposError: (state, action: PayloadAction<string>) => {
-        //     state.reposLoadingStatus = 'error'
-        //     state.reposError = action.payload
-        // }
     },
     extraReducers: {
         [getAllRepo.fulfilled.type]: (state, action: PayloadAction<IRepos[]>) => {
